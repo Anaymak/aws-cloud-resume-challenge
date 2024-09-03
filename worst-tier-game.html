@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Top 5 Worst Things</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+    }
+
+    #page-title {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .tier-list {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 10px;
+    }
+
+    .tier {
+      border: 2px solid #555;
+      border-radius: 5px;
+      padding: 10px;
+      min-height: 100px;
+    }
+
+    .tier1 { background-color: #09ff00; } /* green */
+    .tier2 { background-color: #d5ff00; } /* greeny yellow */
+    .tier3 { background-color: #ffc001; } /* orange */
+    .tier4 { background-color: #e96900; } /* orangey red */
+    .tier5 { background-color: #FF0000; } /* red */
+
+    .language {
+      cursor: pointer;
+      user-select: none;
+      margin: 5px;
+      padding: 8px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      background-color: #eee;
+    }
+
+    #submit-button {
+      margin-top: 20px;
+      padding: 10px;
+      cursor: pointer;
+      background-color: #4caf50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <div id="page-title">Top 5 Worst Things</div>
+
+  <div class="tier-list">
+    <div id="tier1" class="tier tier1" ondrop="drop(event)" ondragover="allowDrop(event)">Worst</div>
+    <div id="tier2" class="tier tier2" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="tier3" class="tier tier3" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="tier4" class="tier tier4" ondrop="drop(event)" ondragover="allowDrop(event)"></div>
+    <div id="tier5" class="tier tier5" ondrop="drop(event)" ondragover="allowDrop(event)">Absolutely Horrific</div>
+  </div>
+
+  <div id="languages">
+    <div id="javascript" class="language" draggable="true" ondragstart="drag(event)">Deliveroo driver goes the wrong way</div>
+    <div id="python" class="language" draggable="true" ondragstart="drag(event)">War Crimes</div>
+    <div id="java" class="language" draggable="true" ondragstart="drag(event)">Poverty</div>
+    <div id="csharp" class="language" draggable="true" ondragstart="drag(event)">Awkward handshake</div>
+    <div id="cpp" class="language" draggable="true" ondragstart="drag(event)">Standing on Lego</div>
+  </div>
+
+  <button id="submit-button" onclick="submitRankings()">Submit Rankings</button>
+
+  <script>
+    function allowDrop(event) {
+      event.preventDefault();
+    }
+
+    function drag(event) {
+      event.dataTransfer.setData("text", event.target.id);
+    }
+
+    function drop(event) {
+      event.preventDefault();
+      const languageId = event.dataTransfer.getData("text");
+      const languageElement = document.getElementById(languageId);
+
+      event.target.appendChild(languageElement);
+    }
+
+    function submitRankings() {
+      const tiers = document.querySelectorAll('.tier');
+      const rankings = Array.from(tiers).map((tier, index) => {
+        const languageElements = tier.querySelectorAll('.language');
+        return {
+          tier: index + 1,
+          languages: Array.from(languageElements).map(element => element.textContent)
+        };
+      });
+
+      alert(JSON.stringify(rankings, null, 2));
+    }
+  </script>
+</body>
+</html>
